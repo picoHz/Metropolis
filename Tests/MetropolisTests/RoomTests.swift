@@ -65,4 +65,11 @@ final class RoomTests: XCTestCase {
         let roomId = try await authClient.createRoom(room: room)
         _ = try await authClient.getRoomMembers(roomId: roomId)
     }
+
+    func testLeaveRoom() async throws {
+        let authClient = await getTestAuthClient()
+        let room = MPRoomCreationRequest(visibility: .privateRoom)
+        let roomId = try await authClient.createRoom(room: room)
+        try await authClient.leaveRoom(roomId: roomId)
+    }
 }

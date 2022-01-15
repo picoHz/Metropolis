@@ -66,11 +66,26 @@ final class UserDataTests: XCTestCase {
     }
 
     func testAddTag() async throws {
+        let tag = "thank you"
+        let order: Float = 0.5
         let authClient = await getTestAuthClient()
         let room = MPRoomCreationRequest()
         let roomId = try await authClient.createRoom(room: room)
         _ = try await authClient.addTag(
-            userId: authClient.userId!, roomId: roomId, tag: "thank you", order: 0.5)
-        _ = try await authClient.getTags(userId: authClient.userId!, roomId: roomId)
+            userId: authClient.userId!, roomId: roomId, tag: "thank you", order: order)
+        let tags = try await authClient.getTags(userId: authClient.userId!, roomId: roomId)
+        XCTAssertEqual(tags[tag]?.order, order)
+    }
+
+    func testDeleteTag() async throws {
+        let tag = "thank you"
+        let authClient = await getTestAuthClient()
+        let room = MPRoomCreationRequest()
+        let roomId = try await authClient.createRoom(room: room)
+        _ = try await authClient.addTag(
+            userId: authClient.userId!, roomId: roomId, tag: tag)
+        _ = try await authClient.removeTag(userId: authClient.userId!, roomId: roomId, tag: tag)
+        let tags = try await authClient.getTags(userId: authClient.userId!, roomId: roomId)
+        XCTAssertNil(tags[tag])
     }
 }

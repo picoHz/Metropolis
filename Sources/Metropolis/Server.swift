@@ -52,6 +52,7 @@ extension MPClient: MPServerAPI {
     public func getTURNServerCredentials() async throws -> MPTURNServerCredentials? {
         let path: SafePath = "_matrix/client/v3/voip/turnServer"
         let credentials: JSON = try await self.send(.get(path.encoded)).value
-        return try? sharedJSONDecoder.decode(MPTURNServerCredentials.self, from: credentials.rawData())
+        return try? sharedJSONDecoder.decode(
+            MPTURNServerCredentials.self, from: credentials.rawData())
     }
 }
