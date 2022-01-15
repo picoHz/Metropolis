@@ -11,6 +11,7 @@ final class ServerTests: XCTestCase {
         try await AssertThrowsStandardError(errcode: "M_MISSING_TOKEN") {
             _ = try await getAnonClient().getTURNServerCredentials()
         }
+        _ = try await getTestAuthClient().getTURNServerCredentials()
     }
 
     func testGetCapabilities() async throws {

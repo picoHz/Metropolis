@@ -18,7 +18,7 @@ public protocol MPServerAPI {
     ///
     /// See [Specification](https://spec.matrix.org/v1.1/client-server-api/#get_matrixclientv3voipturnserver) for
     /// more informataion.
-    func getTURNServerCredentials() async throws -> MPTURNServerCredentials
+    func getTURNServerCredentials() async throws -> MPTURNServerCredentials?
 }
 
 public struct MPServerVersions: Decodable {
@@ -49,8 +49,9 @@ extension MPClient: MPServerAPI {
         return caps.capabilities
     }
 
-    public func getTURNServerCredentials() async throws -> MPTURNServerCredentials {
+    public func getTURNServerCredentials() async throws -> MPTURNServerCredentials? {
         let path: SafePath = "_matrix/client/v3/voip/turnServer"
-        return try await self.send(.get(path.encoded)).value
+        let credentials: JSON = try await self.send(.get(path.encoded)).value
+        return try? sharedJSONDecoder.decode(MPTURNServerCredentials.self, from: credentials.rawData())
     }
 }
