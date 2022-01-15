@@ -27,13 +27,13 @@ extension MPClient: MPMediaAPI {
     }
 
     public func getMediaDownloadUrl(serverName: String, mediaId: String) -> URL {
-        return self.client.baseUrl.appendingPathComponent(
-            "_matrix/media/v3/download/\(serverName)/\(mediaId)")
+        let path: SafePath = "_matrix/media/v3/download/\(serverName)/\(mediaId)"
+        return self.client.baseUrl.appendingPathComponent(path.encoded)
     }
 
     public func getMediaThumbnailUrl(serverName: String, mediaId: String) -> URL {
-        return self.client.baseUrl.appendingPathComponent(
-            "_matrix/media/v3/thumbnail/\(serverName)/\(mediaId)")
+        let path: SafePath = "_matrix/media/v3/thumbnail/\(serverName)/\(mediaId)"
+        return self.client.baseUrl.appendingPathComponent(path.encoded)
     }
 
     public func getMediaUploadUrl() -> URL {
